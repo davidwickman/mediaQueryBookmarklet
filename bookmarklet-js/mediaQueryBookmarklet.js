@@ -11,23 +11,11 @@ window.mqb = {
 
     mqb.version = '1.4.4';
     mqb.tmpl =
-      "<p id=\"mqb-dimensions\"></p>" +
-      "<p id=\"mqb-mousePosition\"></p>" +
-      "<ol id=\"mqb-queries\"></ol>" +
       "<div id=\"mqb-linksContainer\">" +
-      "  <a id=\"mqb-version\" href=\"https://github.com/sparkbox/mediaQueryBookmarklet\">version {{version}}</a>" +
-      "  <button id=\"mqb-closeButton\">close</button>" +
-      "  <button id=\"mqb-positionButton\"></button>" +
-      "</div>";
-    mqb.rulersTmpl =
-      "<div id=\"mqb-horz-ruler\">" +
-      "  <div id=\"mqb-mouseXPosition\">" +
-      "</div>" +
-      "<div id=\"mqb-vert-ruler\">" +
-      "  <div id=\"mqb-mouseYPosition\">" +
-      "</div>";
+      "  <button id=\"mqb-closeButton\">x</button>" +
+      "</div>" + 
+      "<p id=\"mqb-dimensions\"></p>";
 
-    mqb.rulers = document.getElementById( "sb-rulers" );
     mqb.emTest = document.createElement( "div" );
     mqb.emTest.id = "mqb-emTest";
     document.body.appendChild( mqb.emTest );
@@ -56,20 +44,7 @@ window.mqb = {
     mqb.container.className = "onRight";
     mqb.container.innerHTML = mqb.tmpl;
     document.body.appendChild( mqb.container );
-
-    mqb.appendRulers();
     mqb.attachEvents();
-  },
-
-  appendRulers: function() {
-    mqb.rulers = document.createElement( "div" );
-    mqb.rulers.id = "sb-rulers";
-    mqb.rulers.innerHTML = mqb.rulersTmpl;
-    document.body.appendChild( mqb.rulers );
-
-    mqb.mouseXPosition = document.getElementById( "mqb-mouseXPosition" );
-    mqb.mouseYPosition = document.getElementById( "mqb-mouseYPosition" );
-    mqb.showMousePosition = document.getElementById( "mqb-mousePosition" );
   },
 
   attachEvents: function() {
@@ -77,15 +52,6 @@ window.mqb = {
     document.getElementById( "mqb-closeButton" ).addEventListener( "click", function( e ) {
       mqb.close( e );
       mqb = null;
-    });
-
-    /* Position Button */
-    document.getElementById( "mqb-positionButton" ).addEventListener( 'click', function( e ) {
-      if ( mqb.container.className == "onLeft" ) {
-        mqb.container.className = "onRight";
-      } else {
-        mqb.container.className = "onLeft";
-      }
     });
 
     document.addEventListener( 'mousemove', mqb.showCurrentMousePos );
@@ -96,7 +62,6 @@ window.mqb = {
 
     document.body.removeChild( mqb.container );
     document.body.removeChild( mqb.emTest );
-    document.body.removeChild( mqb.rulers );
     document.head.removeChild( mqb.css );
 
     for ( var i in mqb.guideStyles ) {
@@ -128,7 +93,6 @@ window.mqb = {
     mqb.appendDisplay();
     mqb.viewDimensions = document.getElementById( "mqb-dimensions" );
     mqb.viewQueries = document.getElementById( "mqb-queries" );
-    mqb.tmplReplace( "mqb-version", "version " + mqb.version );
     mqb.showCurrentSize();
   },
 
@@ -180,7 +144,7 @@ window.mqb = {
     mqb.css = document.createElement( 'link' );
     mqb.css.type = "text/css";
     mqb.css.rel = "stylesheet";
-    mqb.css.href = "http://sparkbox.github.com/mediaQueryBookmarklet/stylesheets/mediaQuery.css";
+    mqb.css.href = "http://wickmanstudios.com/git/mediaQueryBookmarklet/mediaQuery.css";
     document.head.appendChild( mqb.css );
   },
 
@@ -198,7 +162,7 @@ window.mqb = {
   showCurrentSize: function() {
     var width = window.innerWidth || window.outerWidth;
     var height = window.innerHeight || window.outerHeight;
-    mqb.viewDimensions.innerHTML = width + 'px x ' + height + 'px<br/>' + ( width / mqb.findEmSize() ).toPrecision( 4 ) + 'em x ' + ( height / mqb.findEmSize() ).toPrecision( 4 ) + 'em';
+    mqb.viewDimensions.innerHTML = width + 'px x ' + height + 'px&nbsp;&nbsp;&nbsp;' + ( width / mqb.findEmSize() ).toPrecision( 4 ) + 'em x ' + ( height / mqb.findEmSize() ).toPrecision( 4 ) + 'em';
   },
 
   tmplReplace: function( dstID, src ) {
